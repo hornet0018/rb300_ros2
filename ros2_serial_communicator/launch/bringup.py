@@ -24,6 +24,20 @@ def generate_launch_description():
     wheel_separation = LaunchConfiguration('wheel_separation', default='0.1796')
     max_rpm = LaunchConfiguration('max_rpm', default='200')
 
+    tf2_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        output='screen',
+        arguments=['-0.042', '0', '0.1094', '-1.5708', '0','0','base_link','laser_frame'],
+    )
+
+    ros_tcp_endpoint_node = Node(
+        package="ros_tcp_endpoint",
+        executable="default_server_endpoint",
+        emulate_tty=True,
+        parameters=[{"ROS_IP": "0.0.0.0"}, {"ROS_TCP_PORT": 10000}],
+    )
+
     return LaunchDescription([
         # LiDARの設定
         DeclareLaunchArgument(
@@ -89,4 +103,10 @@ def generate_launch_description():
                 'max_rpm': max_rpm,
             }],
             output='screen'),
+
+        # tf2 ノード
+        tf2_node,
+
+        # ROS TCP Endpoint ノード
+        ros_tcp_endpoint_node,
     ])
