@@ -11,31 +11,77 @@ from launch.substitutions import LaunchConfiguration
 def generate_launch_description():
     # LiDAR用のLaunchConfiguration
     channel_type = LaunchConfiguration('channel_type', default='serial')
-    serial_port = LaunchConfiguration('serial_port', default='/dev/rplidar_usb_serial')
+    serial_port = LaunchConfiguration('serial_port', default='/dev/ttyUSB0')
     serial_baudrate = LaunchConfiguration('serial_baudrate', default='460800')
-    frame_id = LaunchConfiguration('frame_id', default='laser')
+    frame_id = LaunchConfiguration('frame_id', default='laser_frame')
     inverted = LaunchConfiguration('inverted', default='false')
     angle_compensate = LaunchConfiguration('angle_compensate', default='true')
     scan_mode = LaunchConfiguration('scan_mode', default='Standard')
 
     # シリアル送信ノード用のLaunchConfiguration
-    esp32_serial_port = LaunchConfiguration('esp32_serial_port', default='/dev/esp32_usb_serial')
+    esp32_serial_port = LaunchConfiguration('esp32_serial_port', default='/dev/ttyUSB1')
     wheel_radius = LaunchConfiguration('wheel_radius', default='0.085')
     wheel_separation = LaunchConfiguration('wheel_separation', default='0.1796')
     max_rpm = LaunchConfiguration('max_rpm', default='200')
-
-    tf2_node = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        output='screen',
-        arguments=['-0.042', '0', '0.1094', '-1.5708', '0','0','base_link','laser_frame'],
-    )
 
     ros_tcp_endpoint_node = Node(
         package="ros_tcp_endpoint",
         executable="default_server_endpoint",
         emulate_tty=True,
         parameters=[{"ROS_IP": "0.0.0.0"}, {"ROS_TCP_PORT": 10000}],
+    )
+
+    # base_link から laser_frame への静的変換
+    tf2_node_laser = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='static_tf_pub_laser',
+        arguments=['0', '0', '0', '0', '0', '0', '1', 'base_link', 'laser_frame'],
+    )
+
+    # map から odom への静的変換
+    tf2_node_map_to_odom = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='static_tf_pub_map_to_odom',
+        arguments=['0', '0', '0', '0', '0', '0', '1', 'map', 'odom'],
+    )
+
+    # odom から base_footprint への静的変換
+    tf2_node_odom_to_base_footprint = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='static_tf_pub_odom_to_base_footprint',
+        arguments=['0', '0', '0', '0', '0', '0', '1', 'odom', 'base_footprint'],
+    )
+
+    # base_footprint から base_link への静的変換
+    tf2_node_base_footprint_to_base_link = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='static_tf_pub_base_footprint_to_base_link',
+        arguments=['0', '0', '0', '0', '0', '0', '1', 'base_footprint', 'base_link'],
+    )
+
+    slam_node = Node(
+        package='slam_toolbox',
+        executable='sync_slam_toolbox_node',
+        output='screen',
+        parameters=[
+            get_package_share_directory('ros2_serial_communicator')
+            + '/configuration_files/mapper_params_offline.yaml'
+        ],
+    )
+
+    rviz2_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        arguments=[
+            '-d',
+            get_package_share_directory('ros2_serial_communicator')
+            + '/config/gmapping.rviz'
+        ],
     )
 
     return LaunchDescription([
@@ -104,9 +150,18 @@ def generate_launch_description():
             }],
             output='screen'),
 
-        # tf2 ノード
-        tf2_node,
-
         # ROS TCP Endpoint ノード
         ros_tcp_endpoint_node,
+
+        # TF2 ノードの追加
+        tf2_node_laser,
+        tf2_node_map_to_odom,
+        tf2_node_odom_to_base_footprint,
+        tf2_node_base_footprint_to_base_link,
+
+        # SLAM ノードの追加
+        slam_node,
+
+        # RViz2 ノードの追加
+        rviz2_node,
     ])

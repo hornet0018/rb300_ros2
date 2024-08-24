@@ -113,7 +113,7 @@ class SerialSenderReceiver(Node):
                     rpm_l, rpm_r = struct.unpack('<hh', data_without_crc)
                     rpm_r = -rpm_r  # 右の回転数を反転
 
-                    self.get_logger().info(f'Received values: left={rpm_l}, right={rpm_r}')
+                    #self.get_logger().info(f'Received values: left={rpm_l}, right={rpm_r}')
                     self.publish_odometry(rpm_l, rpm_r)
                 else:
                     self.get_logger().error('CRC mismatch')
