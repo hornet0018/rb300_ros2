@@ -1,12 +1,13 @@
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import Twist, Quaternion
+from geometry_msgs.msg import Twist, Quaternion, TransformStamped
 from nav_msgs.msg import Odometry
 import serial
 from cobs import cobs
 import struct
 import crc8
 import math
+import tf2_ros
 
 MAX_SIZE = 512  # 最大受信可能サイズ
 
@@ -53,6 +54,9 @@ class SerialSenderReceiver(Node):
 
         # 前回の時間
         self.last_time = self.get_clock().now()
+
+        # TransformBroadcasterのインスタンスを作成
+        self.tf_broadcaster = tf2_ros.TransformBroadcaster(self)
 
     def cmd_vel_callback(self, msg):
         linear_velocity = msg.linear.x
@@ -146,7 +150,7 @@ class SerialSenderReceiver(Node):
         odom_msg = Odometry()
         odom_msg.header.stamp = current_time.to_msg()
         odom_msg.header.frame_id = 'odom'
-        odom_msg.child_frame_id = 'base_link'
+        odom_msg.child_frame_id = 'base_footprint'  # 修正箇所
 
         # ポジションの設定
         odom_msg.pose.pose.position.x = self.x
@@ -164,6 +168,20 @@ class SerialSenderReceiver(Node):
 
         # Odometryをパブリッシュ
         self.odom_publisher.publish(odom_msg)
+
+        # TF変換を作成してパブリッシュ
+        transform = TransformStamped()
+        transform.header.stamp = current_time.to_msg()
+        transform.header.frame_id = 'odom'
+        transform.child_frame_id = 'base_footprint'
+        
+        transform.transform.translation.x = self.x
+        transform.transform.translation.y = self.y
+        transform.transform.translation.z = 0.0
+        transform.transform.rotation = odom_quat
+
+        # tfをブロードキャスト
+        self.tf_broadcaster.sendTransform(transform)
 
         # 前回の時間を更新
         self.last_time = current_time

@@ -1,10 +1,8 @@
 <!-- ロボットの名前 -->
 <robot name="diff_drive_robot">
-    <!-- ロボットの基準とするベースリンク -->
-    <link name="base_link"/>
   
 <!-- ボディの作成 -->
-<link name="body">
+  <link name="base_link">
     <visual>
       <geometry>
         <!-- 円柱から直方体に変更。サイズは width, height, depth -->
@@ -29,7 +27,9 @@
         <inertia ixx="0.011875000000000002" iyy="0.011875000000000002" izz="0.020000000000000004" ixy="0" ixz="0" iyz="0"/>
     </inertial>
   </link>
-  
+
+  <!-- Robot Footprint -->
+  <link name="base_footprint"/>
   
     <!-- タイヤの作成 -->
     <link name="wheel_left">
@@ -129,7 +129,7 @@
     </link>
   
     <!-- Lidarの作成 -->
-    <link name="lidar_link">
+    <link name="laser_frame">
       <visual>
         <geometry>
           <cylinder radius="0.02492" length="0.041"/>
@@ -153,89 +153,44 @@
     </link>
   <!-- ################# ジョイント設定 ################## -->
   
-      <joint name="base_joint" type="fixed">
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <parent link="base_link"/>
-      <child link="body"/>
-       </joint>
+    <joint name="base_joint" type="fixed">
+      <parent link="base_footprint"/>
+      <child link="base_link"/>
+      <origin xyz="0.0 0.0 0" rpy="0 0 0"/>
+    </joint>
   
     <!-- タイヤのジョイント設定 -->
     <joint name="wheel_right_joint" type="continuous">
         <axis xyz="0 0 1"/>
         <origin xyz="0.045425 -0.0898 0" rpy="1.57 0 0"/>  <!-- 調整後のX位置 -->
-        <parent link="body"/>
+        <parent link="base_link"/>
         <child link="wheel_right"/>
       </joint>
   
       <joint name="wheel_left_joint" type="continuous">
         <axis xyz="0 0 1"/>
         <origin xyz="0.045425 0.0898 0" rpy="1.57 0 0"/>  <!-- 調整後のX位置 -->
-        <parent link="body"/>
+        <parent link="base_link"/>
         <child link="wheel_left"/>
       </joint>
   
       <joint name="caster_backward_joint" type="fixed">
       <origin xyz="-0.090425 0 -0.02925" rpy="0 0 0"/>
-      <parent link="body"/>
+      <parent link="base_link"/>
       <child link="caster_backward"/>
       </joint>
   
       <joint name="lidar_base_joint" type="fixed">
         <origin xyz="0.045425 0 0.04825" rpy="0 0 0"/>
-      <parent link="body"/>
+      <parent link="base_link"/>
       <child link="lidar_base"/>
       </joint>
   
       <joint name="lidar_joint" type="fixed">
       <origin xyz="0.045425 0 0.08775" rpy="0 0 0"/>
-      <parent link="body"/>
-      <child link="lidar_link"/>
+      <parent link="lidar_base"/>
+      <child link="laser_frame"/>
       </joint>
-  
-  
-  <!-- ################# Gazebo上の設定 ################## -->
-      <!-- 各パーツの情報を設定 -->
-      <gazebo reference="body">
-          <mu1>0.2</mu1>
-          <mu2>0.2</mu2>
-          <material>Gazebo/Red</material>
-      </gazebo>
-  
-      <gazebo reference="wheel_left">
-          <mu1>0.2</mu1>
-          <mu2>0.2</mu2>
-          <material>Gazebo/Blue</material>
-      </gazebo>
-  
-      <gazebo reference="wheel_right">
-          <mu1>0.2</mu1>
-          <mu2>0.2</mu2>
-          <material>Gazebo/Blue</material>
-      </gazebo>
-  
-      <gazebo reference="caster_forward">
-          <mu1>0.0</mu1>
-          <mu2>0.0</mu2>
-          <material>Gazebo/Green</material>
-      </gazebo>
-  
-      <gazebo reference="caster_backward">
-          <mu1>0.0</mu1>
-          <mu2>0.0</mu2>
-          <material>Gazebo/Black</material>
-      </gazebo>
-    
-      <gazebo reference="lidar_base">
-          <mu1>0.0</mu1>
-          <mu2>0.0</mu2>
-          <material>Gazebo/Yellow</material>
-      </gazebo>
-  
-      <gazebo reference="lidar_link">
-          <mu1>0.0</mu1>
-          <mu2>0.0</mu2>
-          <material>Gazebo/Purple</material>
-      </gazebo>
   
   </robot>
   

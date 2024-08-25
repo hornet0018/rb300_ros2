@@ -20,8 +20,8 @@ def generate_launch_description():
 
     # シリアル送信ノード用のLaunchConfiguration
     esp32_serial_port = LaunchConfiguration('esp32_serial_port', default='/dev/esp32_usb_serial')
-    wheel_radius = LaunchConfiguration('wheel_radius', default='0.085')
-    wheel_separation = LaunchConfiguration('wheel_separation', default='0.1796')
+    wheel_radius = LaunchConfiguration('wheel_radius', default='0.0445284')
+    wheel_separation = LaunchConfiguration('wheel_separation', default='0.19')
     max_rpm = LaunchConfiguration('max_rpm', default='200')
 
     # ROS TCP Endpoint ノード
@@ -30,54 +30,6 @@ def generate_launch_description():
         executable="default_server_endpoint",
         emulate_tty=True,
         parameters=[{"ROS_IP": "0.0.0.0"}, {"ROS_TCP_PORT": 10000}],
-    )
-
-    # URDFファイルのパス
-    urdf_file = os.path.join(
-        get_package_share_directory('ros2_serial_communicator'),
-        'urdf',
-        'rb300.urdf'
-    )
-
-    # robot_state_publisher ノード
-    robot_state_publisher_node = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher',
-        output='screen',
-        parameters=[{'robot_description': open(urdf_file).read()}]
-    )
-
-    # SLAM ノード
-    slam_node = Node(
-        package='slam_toolbox',
-        executable='async_slam_toolbox_node',
-        output='screen',
-        parameters=[
-            get_package_share_directory('ros2_serial_communicator')
-            + '/configuration_files/mapper_params_offline.yaml'
-        ],
-    )
-
-    # RViz2 ノード
-    rviz2_node = Node(
-        package='rviz2',
-        executable='rviz2',
-        name='rviz2',
-        arguments=[
-            '-d',
-            get_package_share_directory('ros2_serial_communicator')
-            + '/config/gmapping.rviz'
-        ],
-    )
-
-    # map_static_tf ノード
-    map_static_tf_node = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='static_transform_publisher',
-        output='log',
-        arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'map', 'odom']
     )
 
     return LaunchDescription([
@@ -148,16 +100,4 @@ def generate_launch_description():
 
         # ROS TCP Endpoint ノード
         ros_tcp_endpoint_node,
-
-        # robot_state_publisher ノードの追加
-        robot_state_publisher_node,
-
-        # SLAM ノードの追加
-        slam_node,
-
-        # RViz2 ノードの追加
-        rviz2_node,
-        
-        # map_static_tf ノードの追加
-        map_static_tf_node,
     ])
