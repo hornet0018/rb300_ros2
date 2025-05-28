@@ -62,6 +62,7 @@ def generate_launch_description():
             + '/config/gmapping.rviz'
         ],
     )
+    
 
     # map_static_tf ノード
     map_static_tf_node = Node(

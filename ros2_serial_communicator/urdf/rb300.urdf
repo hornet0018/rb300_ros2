@@ -45,7 +45,7 @@
       <collision>
         <origin rpy="0 0 0" xyz="0 0 0.0"/>
         <geometry>
-          <cylinder radius="0.0425" length="0.05"/>]
+          <cylinder radius="0.0425" length="0.05"/>
         </geometry>
       </collision>
       <!--慣性-->
@@ -132,7 +132,7 @@
     <link name="laser_frame">
       <visual>
         <geometry>
-          <cylinder radius="0.02492" length="0.041"/>
+          <cylinder radius="0.02492" length="0.0596"/>
         </geometry>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <material name="purple">
@@ -187,7 +187,7 @@
       </joint>
   
       <joint name="lidar_joint" type="fixed">
-      <origin xyz="0.045425 0 0.08775" rpy="0 0 0"/>
+      <origin xyz="0 0 0.0485" rpy="0 0 3.14159"/>
       <parent link="lidar_base"/>
       <child link="laser_frame"/>
       </joint>
