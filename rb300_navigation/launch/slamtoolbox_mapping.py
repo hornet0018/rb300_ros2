@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
@@ -20,24 +19,36 @@ def generate_launch_description():
 
     # シリアル送信ノード用のLaunchConfiguration
     esp32_serial_port = LaunchConfiguration('esp32_serial_port', default='/dev/esp32_usb_serial')
-    wheel_radius = LaunchConfiguration('wheel_radius', default='0.085')
-    wheel_separation = LaunchConfiguration('wheel_separation', default='0.1796')
+    wheel_radius = LaunchConfiguration('wheel_radius', default='0.0473')
+    wheel_separation = LaunchConfiguration('wheel_separation', default='0.205')
     max_rpm = LaunchConfiguration('max_rpm', default='200')
 
-    # URDFファイルのパス
-    urdf_file = os.path.join(
-        get_package_share_directory('ros2_serial_communicator'),
-        'urdf',
-        'rb300.urdf'
+    # map → odom の変換
+    map_to_odom = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='map_to_odom',
+        arguments=['--x', '0.0', '--y', '0.0', '--z', '0.0',
+                   '--frame-id', 'map', '--child-frame-id', 'odom']
     )
 
-    # robot_state_publisher ノード
-    robot_state_publisher_node = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher',
-        output='screen',
-        parameters=[{'robot_description': open(urdf_file).read()}]
+    # base_footprint → base_link の変換
+    base_footprint_to_base_link = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='base_footprint_to_base_link',
+        arguments=['--x', '0.0', '--y', '0.0', '--z', '0.0425', 
+                   '--frame-id', 'base_footprint', '--child-frame-id', 'base_link']
+    )
+
+    # base_link → laser_frame の変換（180度回転）
+    base_link_to_laser_frame = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='base_link_to_laser_frame',
+        arguments=['--x', '0.0', '--y', '0.0', '--z', '0.0975',  # 0.142 - 0.0425 = 0.0975
+                '--roll', '0.0', '--pitch', '0.0', '--yaw', '3.14159',  # 180度回転
+                '--frame-id', 'base_link', '--child-frame-id', 'laser_frame']
     )
 
     # SLAM ノード
@@ -62,54 +73,16 @@ def generate_launch_description():
             + '/config/gmapping.rviz'
         ],
     )
-    
 
-    # map_static_tf ノード
-    map_static_tf_node = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='static_transform_publisher',
-        output='log',
-        arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'map', 'odom']
+    # ROS TCP Endpoint ノード
+    ros_tcp_endpoint_node = Node(
+        package="ros_tcp_endpoint",
+        executable="default_server_endpoint",
+        emulate_tty=True,
+        parameters=[{"ROS_IP": "0.0.0.0"}, {"ROS_TCP_PORT": 10000}],
     )
 
     return LaunchDescription([
-        # LiDARの設定
-        DeclareLaunchArgument(
-            'channel_type',
-            default_value=channel_type,
-            description='Specifying channel type of lidar'),
-
-        DeclareLaunchArgument(
-            'serial_port',
-            default_value=serial_port,
-            description='Specifying usb port to connected lidar'),
-
-        DeclareLaunchArgument(
-            'serial_baudrate',
-            default_value=serial_baudrate,
-            description='Specifying usb port baudrate to connected lidar'),
-        
-        DeclareLaunchArgument(
-            'frame_id',
-            default_value=frame_id,
-            description='Specifying frame_id of lidar'),
-
-        DeclareLaunchArgument(
-            'inverted',
-            default_value=inverted,
-            description='Specifying whether or not to invert scan data'),
-
-        DeclareLaunchArgument(
-            'angle_compensate',
-            default_value=angle_compensate,
-            description='Specifying whether or not to enable angle_compensate of scan data'),
-
-        DeclareLaunchArgument(
-            'scan_mode',
-            default_value=scan_mode,
-            description='Specifying scan mode of lidar'),
-
         # LiDARノード
         Node(
             package='sllidar_ros2',
@@ -139,15 +112,17 @@ def generate_launch_description():
             }],
             output='screen'),
 
-        # robot_state_publisher ノードの追加
-        robot_state_publisher_node,
-
-        # SLAM ノードの追加
+        # TF変換ノード
+        base_footprint_to_base_link,
+        base_link_to_laser_frame,
+        map_to_odom,
+        
+        # SLAM ノード
         slam_node,
 
-        # RViz2 ノードの追加
+        # RViz2 ノード
         rviz2_node,
-        
-        # map_static_tf ノードの追加
-        map_static_tf_node,
+
+        # ROS TCP Endpoint ノード
+        ros_tcp_endpoint_node,
     ])

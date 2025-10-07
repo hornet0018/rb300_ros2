@@ -67,21 +67,25 @@ def generate_launch_description():
         'scan_mode', default_value=scan_mode,
         description='Specifying scan mode of lidar')
 
-    # URDFファイルのパス
-    urdf_file = os.path.join(
-        get_package_share_directory('ros2_serial_communicator'),
-        'urdf',
-        'rb300.urdf'
+    # base_footprint → base_link の変換
+    base_footprint_to_base_link = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='base_footprint_to_base_link',
+        arguments=['--x', '0.0', '--y', '0.0', '--z', '0.0425', 
+                   '--frame-id', 'base_footprint', '--child-frame-id', 'base_link']
     )
 
-    # robot_state_publisher ノード
-    robot_state_publisher_node = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher',
-        output='screen',
-        parameters=[{'robot_description': open(urdf_file).read()}]
+    # base_link → laser_frame の変換（180度回転）
+    base_link_to_laser_frame = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='base_link_to_laser_frame',
+        arguments=['--x', '0.0', '--y', '0.0', '--z', '0.0975',  # 0.142 - 0.0425 = 0.0975
+                '--roll', '0.0', '--pitch', '0.0', '--yaw', '3.14159',  # 180度回転
+                '--frame-id', 'base_link', '--child-frame-id', 'laser_frame']
     )
+
 
     # map→odom の static TF
     map_static_tf_node = Node(
@@ -94,6 +98,14 @@ def generate_launch_description():
             '0.0', '0.0', '0.0',  # roll pitch yaw
             'map', 'odom'
         ]
+    )
+
+        # ROS TCP Endpoint ノード
+    ros_tcp_endpoint_node = Node(
+        package="ros_tcp_endpoint",
+        executable="default_server_endpoint",
+        emulate_tty=True,
+        parameters=[{"ROS_IP": "0.0.0.0"}, {"ROS_TCP_PORT": 10000}],
     )
 
     lifecycle_nodes = ['map_server']
@@ -123,8 +135,10 @@ def generate_launch_description():
                 name='serial_sender',
                 output='screen'),
             # 既存ノード群…
-            robot_state_publisher_node,
             map_static_tf_node,
+            base_footprint_to_base_link,
+            base_link_to_laser_frame,
+            ros_tcp_endpoint_node,
             Node(
                 package='nav2_map_server',
                 executable='map_server',

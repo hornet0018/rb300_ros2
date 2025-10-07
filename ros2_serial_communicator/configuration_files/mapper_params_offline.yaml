@@ -16,33 +16,35 @@ slam_toolbox:
     base_frame: base_link
     scan_topic: /scan
     mode: mapping #localization
+    
     debug_logging: false
     throttle_scans: 1
-    transform_publish_period: 0.02 #if 0 never publishes odometry
-    map_update_interval: 1.0
-    resolution: 0.05
-    max_laser_range: 8.0 #for rastering images
-    minimum_time_interval: 0.5
-    transform_timeout: 0.2
-    tf_buffer_duration: 14400.
-    stack_size_to_use: 40000000 #// program needs a larger stack size to serialize large maps
+    transform_publish_period: 0.02
+    map_update_interval: 1.0  # 1.0から0.5に変更（より頻繁な更新）
+    resolution: 0.03  # 0.05から0.03に変更（高解像度）
+    max_laser_range: 5.0  # 8.0から6.0に変更（RPLiDAR C1の有効範囲）
+    minimum_laser_range : 0.15
+    minimum_time_interval: 0.2  # 0.5から0.2に変更
+    transform_timeout: 0.1  # 0.2から0.1に変更
+    tf_buffer_duration: 30.0  # 14400から30に変更
+    stack_size_to_use: 40000000
     enable_interactive_mode: true
 
     # General Parameters
     use_scan_matching: true
     use_scan_barycenter: true
-    minimum_travel_distance: 0.05
-    minimum_travel_heading: 0.05
-    scan_buffer_size: 10
-    scan_buffer_maximum_scan_distance: 10.0
-    link_match_minimum_response_fine: 0.1  
-    link_scan_maximum_distance: 1.5
+    minimum_travel_distance: 1.0     # 上記で設定済み
+    minimum_travel_heading: 1.0       # 上記で設定済み
+    scan_buffer_size: 5
+    scan_buffer_maximum_scan_distance: 5.0
+    link_match_minimum_response_fine: 0.2   # 0.1から0.2に増加（マッチング閾値を厳しく）
+    link_scan_maximum_distance: 1.0         # 1.5から1.0に減少（近い観測のみ使用）
     loop_search_maximum_distance: 3.0
     do_loop_closing: true 
-    loop_match_minimum_chain_size: 10           
-    loop_match_maximum_variance_coarse: 3.0  
-    loop_match_minimum_response_coarse: 0.35    
-    loop_match_minimum_response_fine: 0.45
+    loop_match_minimum_chain_size: 15        # 10から15に増加（ループ閉じを慎重に）         
+    loop_match_maximum_variance_coarse: 2.0  # 3.0から2.0に減少（分散制限を厳しく）
+    loop_match_minimum_response_coarse: 0.4  # 0.35から0.4に増加
+    loop_match_minimum_response_fine: 0.5    # 0.45から0.5に増加
 
     # Correlation Parameters - Correlation Parameters
     correlation_search_space_dimension: 0.5
@@ -57,6 +59,12 @@ slam_toolbox:
     # Scan Matcher Parameters
     distance_variance_penalty: 0.5      
     angle_variance_penalty: 1.0    
+    
+    # レーザー観測に対するオドメトリの重み
+    # 値を大きくするとオドメトリをより信頼、小さくするとレーザーを重視
+    #scan_matcher_use_odometry_prediction: true
+    #position_covariance_scale: 0.05     # オドメトリ位置の共分散スケール
+    #angle_covariance_scale: 0.05        # オドメトリ角度の共分散スケール    
 
     fine_search_angle_offset: 0.00349     
     coarse_search_angle_offset: 0.349   
@@ -64,3 +72,17 @@ slam_toolbox:
     minimum_angle_penalty: 0.9
     minimum_distance_penalty: 0.5
     use_response_expansion: true
+    
+    # 追加のオドメトリ制御パラメータ
+    # オドメトリが不正確な場合に調整
+    max_velocity: 0.5                   # 最大速度制限 [m/s]
+    max_angular_velocity: 1.0           # 最大角速度制限 [rad/s]
+    odometry_buffer_size: 20            # オドメトリバッファサイズ
+    
+    # スキャンマッチングの強化
+    use_icp_covariance: true           # ICP共分散を使用
+    scan_matching_minimum_distance: 0.02  # スキャンマッチング最小距離
+    
+    # 地図更新の制御
+    occupancy_grid_to_grid_threshold: 0.3  # 占有格子の閾値
+    free_grid_to_grid_threshold: 0.25      # 自由格子の閾値
