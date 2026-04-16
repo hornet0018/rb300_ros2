@@ -1,3 +1,6 @@
 [submodule "esp_serial_v2_cpp"]
 	path = esp_serial_v2_cpp
 	url = https://github.com/hornet0018/esp_serial_v2_cpp.git
+[submodule "serial"]
+	path = serial
+	url = https://github.com/wjwwood/serial.git
