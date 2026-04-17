@@ -6,17 +6,41 @@ RB300ロボットプラットフォーム用のROS2ワークスペース
 
 このワークスペースには、RB300ロボットを制御・操作するためのROS2パッケージが含まれています。
 
+## 主な機能
+
+- **LiDAR統合**: RPLidar C1によるスキャンデータ取得
+- **オドメトリ生成**: エンコーダ値からの正確なオドメトリ計算
+- **Web監視インターフェース**: ブラウザによるリアルタイム監視・操作
+- **システムモニタリング**: CPU/メモリ使用率の表示
+
 ## パッケージ構成
 
 | パッケージ | 説明 |
 |----------|------|
 | [esp_serial_v2_cpp](esp_serial_v2_cpp/) | ESP32マイコンとのシリアル通信 |
-| [rplidar_ros](rplidar_ros/) | RPLidar A1/A2/A3/S1/S2/S3/T1 用ドライバ |
+| [rplidar_ros](rplidar_ros/) | RPLidar ドライバ（git submodule） |
 | [camera_launch](camera_launch/) | USBカメラ起動ファイル（Hobot D-Robotics専用） |
-| [rb300_launch](rb300_launch/) | RB300統合システム起動ファイル |
-| [serial](serial/) | シリアル通信ライブラリ |
+| [rb300_launch](rb300_launch/) | RB300統合システム（オドメトリ・Web監視） |
+| [serial](serial/) | シリアル通信ライブラリ（git submodule） |
 
 ### 詳細
+
+#### [rb300_launch](rb300_launch/)
+RB300統合システムパッケージ
+
+**ノード**:
+- `odometry_publisher` - エンコーダ値からオドメトリを計算
+- `system_monitor` - CPU/メモリ使用率を配信
+
+**Launchファイル**:
+- `rb300_system.launch.py` - 全システム統合起動
+- `web_bridge.launch.py` - Webインターフェース用ブリッジ
+
+**Webインターフェース**:
+- リアルタイムオドメトリ表示
+- エンコーダ値表示
+- キャリブレーションコントロール
+- システムリソース監視
 
 #### [esp_serial_v2_cpp](esp_serial_v2_cpp/)
 ESP32マイコンとのシリアル通信を行うROS2ノード
@@ -24,44 +48,30 @@ ESP32マイコンとのシリアル通信を行うROS2ノード
 - **機能**: ESP32からのシリアルデータをパースし、ROS2トピックとして配信
 - **主な機能**:
   - シリアル通信によるデータ受信
-  - JSON形式のデータパース
+  - CBOR形式のデータパース
   - ダイアグノスト情報の配信
-- **依存パッケージ**: rclcpp, nlohmann_json, serial, std_msgs, geometry_msgs, diagnostic_updater
+  - 速度指令の送信
 - **ライセンス**: Apache License 2.0
 
 #### [rplidar_ros](rplidar_ros/)
-Slamtec RPLidarシリーズ用のROS2パッケージ
+Slamtec RPLidarシリーズ用のROS2パッケージ（git submodule）
 
-- **対応機種**: A1/A2/A3/S1/S2/S3/T1
+- **対応機種**: A1/A2/A3/C1/S1/S2/S2E/S3/T1
 - **機能**: LiDARセンサーからスキャンデータを取得し、`/scan`トピックとして配信
-- **依存パッケージ**: rclcpp, sensor_msgs, std_srvs, rclcpp_components
 - **ライセンス**: BSD
 
-#### [camera_launch](camera_launch/)
-USBカメラ用起動ファイルパッケージ
-
-- **機能**: USBカメラの起動・設定を行うLaunchファイル（Hobot D-Robotics専用）
-- **Launchファイル**:
-  - `hobot_usb_cam.launch.py` - USBカメラの基本起動
-  - `hobot_usb_cam_websocket.launch.py` - WebSocket経由でのストリーミング
-  - `dnn_node_sample.launch.py` - DNN推論サンプル
-- **依存パッケージ**: ros_base, diagnostic_updater, sensor_msgs, diagnostic_msgs, hobot_usb_cam, hobot_codec, hobot_shm
-
-#### [rb300_launch](rb300_launch/)
-RB300統合起動ファイルパッケージ
-
-- **機能**: RB300ロボットの全ノードを一括起動
-- **Launchファイル**:
-  - `rb300_system.launch.py` - RPLidar + ESP32シリアルノードの統合起動
-
-#### [serial](serial/)
-シリアル通信ライブラリ（ROS2依存なし）
-
-- **機能**: クロスプラットフォーム対応のシリアルポート通信ライブラリ
-- **対応OS**: Linux, Windows
-- **ライセンス**: MIT
-
 ## セットアップ
+
+### クローンとサブモジュールの取得
+
+```bash
+# リポジトリをクローン
+git clone <repository-url>
+cd rb300_ros2
+
+# サブモジュールの初期化と最新の取得
+git submodule update --init --recursive
+```
 
 ### ビルド
 
@@ -74,21 +84,17 @@ source install/setup.bash
 ### 依存関係のインストール
 
 ```bash
-# ROS2パッケージの依存関係
-sudo apt install ros-<ros2-distro>-diagnostic-updater
-sudo apt install ros-<ros2-distro>-sensor-msgs
-sudo apt install ros-<ros2-distro>-geometry-msgs
-sudo apt install ros-<ros2-distro>-std-srvs
+# ROS2パッケージ
+sudo apt install ros-humble-diagnostic-updater
+sudo apt install ros-humble-rosbridge-suite
 
-# nlohmann_json (システムパッケージ)
+# システムパッケージ
 sudo apt install nlohmann-json3-dev
 ```
 
 ## 使用方法
 
-### 全システムの起動（推奨）
-
-RB300の全ノード（RPLidar + ESP32シリアル）を一括起動:
+### 全システムの起動
 
 ```bash
 ros2 launch rb300_launch rb300_system.launch.py
@@ -98,7 +104,7 @@ ros2 launch rb300_launch rb300_system.launch.py
 
 ```bash
 ros2 launch rb300_launch rb300_system.launch.py \
-  rplidar_serial_port:=/dev/ttyUSB0 \
+  rplidar_serial_port:=/dev/rplidar_c1 \
   esp_serial_port:=/dev/esp32_serial
 ```
 
@@ -106,55 +112,108 @@ ros2 launch rb300_launch rb300_system.launch.py \
 
 | パラメータ | デフォルト値 | 説明 |
 |----------|------------|------|
-| `rplidar_serial_port` | `/dev/ttyUSB0` | RPLidarのシリアルポート |
-| `rplidar_baudrate` | `1000000` | RPLidarのボーレート |
-| `rplidar_frame_id` | `laser` | RPLidarのフレームID |
-| `rplidar_scan_mode` | `DenseBoost` | RPLidarのスキャンモード |
+| **RPLidar** | | |
+| `rplidar_serial_port` | `/dev/rplidar_c1` | RPLidarのシリアルポート |
+| `rplidar_baudrate` | `460800` | RPLidarのボーレート |
+| `rplidar_scan_mode` | `Standard` | RPLidarのスキャンモード |
+| **ESP32シリアル** | | |
 | `esp_serial_port` | `/dev/esp32_serial` | ESP32のシリアルポート |
 | `esp_baud_rate` | `115200` | ESP32のボーレート |
+| **ロボットパラメータ** | | |
 | `wheel_radius` | `0.0473` | 車輪半径（m） |
 | `wheel_separation` | `0.1796` | 車輪間隔（m） |
 | `max_rpm` | `115` | 最大モーターRPM |
 | `cmd_vel_timeout` | `0.5` | cmd_velタイムアウト（秒） |
+| `invert_motor_l` | `true` | 左モーター反転 |
+| `invert_motor_r` | `true` | 右モーター反転 |
 
-### 個別ノードの起動
+### Webインターフェース
 
-#### RPLidarの起動
-
+**端末1** - システム起動:
 ```bash
-ros2 launch rplidar_ros rplidar_s2_launch.py
+ros2 launch rb300_launch rb300_system.launch.py
 ```
 
-#### ESP32シリアル通信ノードの起動
-
+**端末2** - Webブリッジ:
 ```bash
-ros2 launch esp_serial_v2_cpp esp_serial.launch.py
+ros2 launch rb300_launch web_bridge.launch.py
 ```
 
-#### USBカメラの起動
-
+**端末3** - HTTPサーバー:
 ```bash
-ros2 launch camera_launch hobot_usb_cam.launch.py
+cd /home/sunrise/ros2_ws/src/rb300_ros2/rb300_launch/web
+python3 -m http.server 8000
 ```
+
+ブラウザでアクセス:
+```
+http://localhost:8000/odom_viewer.html
+```
+
+**Web機能**:
+- オドメトリ表示（X, Y, Theta）
+- エンコーダ値表示（左/右車輪）
+- システムリソース監視（CPU/メモリ）
+- キャリブレーションボタン（前進1m、回転90°等）
+- D-PADコントローラー
 
 ## トピック
 
+### トピック一覧
+
 | トピック名 | メッセージ型 | 説明 |
 |------------|-------------|------|
-| `/scan` | `sensor_msgs/LaserScan` | LiDARスキャンデータ |
-| `/cmd_vel` | `geometry_msgs/Twist` | 速度指令 |
+| **オドメトリ** | | |
 | `/odom` | `nav_msgs/Odometry` | オドメトリ |
+| `/tf` | `tf2_msgs/TFMessage` | 座標変換（odom→base_link→laser） |
+| **LiDAR** | | |
+| `/scan` | `sensor_msgs/LaserScan` | LiDARスキャンデータ |
+| **速度指令** | | |
+| `/cmd_vel` | `geometry_msgs/Twist` | 速度指令 |
+| **エンコーダ** | | |
+| `/esp/position_l_rad` | `std_msgs/Float64` | 左車輪エンコーダ（rad） |
+| `/esp/position_r_rad` | `std_msgs/Float64` | 右車輪エンコーダ（rad） |
+| `/esp/speed_l` | `std_msgs/Int16` | 左車輪速度（RPM） |
+| `/esp/speed_r` | `std_msgs/Int16` | 右車輪速度（RPM） |
+| **システム監視** | | |
+| `/system/cpu_usage` | `std_msgs/Float64` | CPU使用率（%） |
+| `/system/memory_available_gb` | `std_msgs/Float64` | 空きメモリ（GB） |
+| `/system/memory_usage_percent` | `std_msgs/Float64` | メモリ使用率（%） |
+| **その他** | | |
 | `/diagnostics` | `diagnostic_msgs/DiagnosticArray` | ダイアグノスト情報 |
+| `/battery_voltage` | `std_msgs/Float32` | バッテリー電圧 |
+
+### スクリプト
+
+| スクリプト | 説明 |
+|----------|------|
+| `scripts/test_odom.py` | オドメトリテスト（0.1m/s × 10秒） |
+| `scripts/monitor_odom.py` | オドメトリ監視（端末表示） |
+| `scripts/analyze_odom.py` | rosbagオドメトリ解析 |
+| `scripts/start_web.sh` | Webサーバー一括起動 |
 
 ## ハードウェア構成
 
-- **LiDAR**: RPLidar A1/A2/A3/S1/S2/S3/T1
-- **カメラ**: USBカメラ（UVC対応、Hobot D-Robotics対応）
-- **マイコン**: ESP32（シリアル通信）
+| コンポーネント | モデル | 説明 |
+|--------------|--------|------|
+| **LiDAR** | RPLidar C1 | 2D LiDARスキャナー |
+| **マイコン** | ESP32 | モーター制御・エンコーダ読み取り |
+| **カメラ** | USB UVC | オプション（Hobot対応） |
+
+## TFツリー
+
+```
+odom
+ └── base_link
+      ├── left_wheel_link
+      ├── right_wheel_link
+      └── laser
+```
 
 ## ライセンス
 
 各パッケージのライセンスに従ってください:
+- rb300_launch: Apache License 2.0
 - esp_serial_v2_cpp: Apache License 2.0
 - rplidar_ros: BSD
 - serial: MIT
