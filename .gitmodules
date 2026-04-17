@@ -1,10 +1,10 @@
 [submodule "esp_serial_v2_cpp"]
 	path = esp_serial_v2_cpp
 	url = https://github.com/hornet0018/esp_serial_v2_cpp.git
-[submodule "serial"]
-	path = serial
-	url = https://github.com/wjwwood/serial.git
 [submodule "rplidar_ros"]
 	path = rplidar_ros
 	url = https://github.com/hornet0018/rplidar_ros.git
 	branch = ros2
+[submodule "serial"]
+	path = serial
+	url = https://github.com/RoverRobotics-forks/serial-ros2

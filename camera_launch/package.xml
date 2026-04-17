@@ -3,7 +3,7 @@
 <package format="3">
   <name>camera_launch</name>
   <version>0.0.0</version>
-  <description>Launch file for USB camera</description>
+  <description>USB camera launch files for RB300</description>
   <maintainer email="user@example.com">User</maintainer>
   <license>TODO: License declaration</license>
 
