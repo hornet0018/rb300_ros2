@@ -20,13 +20,12 @@ RB300ロボットプラットフォーム用のROS2ワークスペース
 | [esp_serial_v2_cpp](esp_serial_v2_cpp/) | ESP32マイコンとのシリアル通信 |
 | [rplidar_ros](rplidar_ros/) | RPLidar ドライバ（git submodule） |
 | [camera_launch](camera_launch/) | USBカメラ起動ファイル（Hobot D-Robotics専用） |
-| [rb300_launch](rb300_launch/) | RB300統合システム（オドメトリ・Web監視） |
-| [rb300_webui](rb300_webui/) | React + Flask 製の Web UI（git submodule） |
+| [rb300_webui](rb300_webui/) | RB300統合システム（オドメトリ・Web監視）（git submodule） |
 | [serial](serial/) | シリアル通信ライブラリ（git submodule） |
 
 ### 詳細
 
-#### [rb300_launch](rb300_launch/)
+#### [rb300_webui](rb300_webui/)
 RB300統合システムパッケージ
 
 **ノード**:
@@ -35,6 +34,7 @@ RB300統合システムパッケージ
 
 **Launchファイル**:
 - `rb300_system.launch.py` - 全システム統合起動
+- `web_bridge.launch.py` - Webインターフェース用ブリッジ
 
 #### [esp_serial_v2_cpp](esp_serial_v2_cpp/)
 ESP32マイコンとのシリアル通信を行うROS2ノード
@@ -120,13 +120,13 @@ source install/setup.bash
 ### 全システムの起動
 
 ```bash
-ros2 launch rb300_launch rb300_system.launch.py
+ros2 launch rb300_webui rb300_system.launch.py
 ```
 
 パラメータを指定して起動:
 
 ```bash
-ros2 launch rb300_launch rb300_system.launch.py \
+ros2 launch rb300_webui rb300_system.launch.py \
   rplidar_serial_port:=/dev/rplidar_c1 \
   esp_serial_port:=/dev/esp32_serial
 ```
