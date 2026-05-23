@@ -8,3 +8,6 @@
 [submodule "serial"]
 	path = serial
 	url = https://github.com/RoverRobotics-forks/serial-ros2
+[submodule "rb300_webui"]
+	path = rb300_webui
+	url = https://github.com/hornet0018/rb300_webui.git
