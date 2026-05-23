@@ -10,8 +10,8 @@ RB300ロボットプラットフォーム用のROS2ワークスペース
 
 - **LiDAR統合**: RPLidar C1によるスキャンデータ取得
 - **オドメトリ生成**: エンコーダ値からの正確なオドメトリ計算
-- **Web監視インターフェース**: ブラウザによるリアルタイム監視・操作
 - **システムモニタリング**: CPU/メモリ使用率の表示
+- **Web UI**: React + Flask によるブラウザベースの監視・操作（[rb300_webui](rb300_webui/)）
 
 ## パッケージ構成
 
@@ -21,6 +21,7 @@ RB300ロボットプラットフォーム用のROS2ワークスペース
 | [rplidar_ros](rplidar_ros/) | RPLidar ドライバ（git submodule） |
 | [camera_launch](camera_launch/) | USBカメラ起動ファイル（Hobot D-Robotics専用） |
 | [rb300_launch](rb300_launch/) | RB300統合システム（オドメトリ・Web監視） |
+| [rb300_webui](rb300_webui/) | React + Flask 製の Web UI（git submodule） |
 | [serial](serial/) | シリアル通信ライブラリ（git submodule） |
 
 ### 詳細
@@ -34,13 +35,6 @@ RB300統合システムパッケージ
 
 **Launchファイル**:
 - `rb300_system.launch.py` - 全システム統合起動
-- `web_bridge.launch.py` - Webインターフェース用ブリッジ
-
-**Webインターフェース**:
-- リアルタイムオドメトリ表示
-- エンコーダ値表示
-- キャリブレーションコントロール
-- システムリソース監視
 
 #### [esp_serial_v2_cpp](esp_serial_v2_cpp/)
 ESP32マイコンとのシリアル通信を行うROS2ノード
@@ -92,6 +86,35 @@ sudo apt install ros-humble-rosbridge-suite
 sudo apt install nlohmann-json3-dev
 ```
 
+### rb300_webui のセットアップ（オプション）
+
+React + Flask の Web UI を使用する場合は、以下の追加セットアップが必要です。
+
+**1. Python 依存のインストール:**
+
+```bash
+pip install -r rb300_webui/requirements.txt
+```
+
+**2. フロントエンドのビルド:**
+
+Node.js 18+ と npm が必要です。
+
+```bash
+cd rb300_webui/frontend
+npm install
+npm run build
+cd ../..
+```
+
+ビルド後、ワークスペースルートに戻ってから `colcon build` を実行してください。
+
+```bash
+cd /home/sunrise/ros2_ws
+colcon build --symlink-install
+source install/setup.bash
+```
+
 ## 使用方法
 
 ### 全システムの起動
@@ -107,6 +130,42 @@ ros2 launch rb300_launch rb300_system.launch.py \
   rplidar_serial_port:=/dev/rplidar_c1 \
   esp_serial_port:=/dev/esp32_serial
 ```
+
+### rb300_webui の起動（React + Flask Web UI）
+
+`rb300_webui` は ROS 2 ノード＋Flask サーバー＋React フロントエンドを含むパッケージです。
+
+**本番モード（ビルド済み `dist/` を配信）:**
+
+```bash
+ros2 launch rb300_webui webui_launch.py
+```
+
+ブラウザでアクセス:
+```
+http://<robot_ip>:5000/
+```
+
+**開発モード（Vite 開発サーバーも同時起動）:**
+
+ホットリロードを有効にする場合は、ソースディレクトリから直接起動するか、frontend を install にコピーしてください。
+
+```bash
+# ソースディレクトリから直接起動（frontend/ が見えるため dev:=true が使えます）
+cd /home/sunrise/ros2_ws/src/rb300_ros2
+ros2 launch rb300_webui webui_launch.py dev:=true
+```
+
+ブラウザでアクセス:
+```
+http://localhost:5173/
+```
+
+> **注意:** `dev:=true` を使う場合、launch ファイルは `install` 内の `frontend/` を参照します。`colcon build` 後に frontend が見つからない場合は、上記のようにソースディレクトリから起動するか、以下で手動コピーしてください。
+>
+> ```bash
+> cp -r src/rb300_ros2/rb300_webui/frontend install/rb300_webui/share/rb300_webui/
+> ```
 
 ### 起動パラメータ
 
@@ -126,36 +185,6 @@ ros2 launch rb300_launch rb300_system.launch.py \
 | `cmd_vel_timeout` | `0.5` | cmd_velタイムアウト（秒） |
 | `invert_motor_l` | `true` | 左モーター反転 |
 | `invert_motor_r` | `true` | 右モーター反転 |
-
-### Webインターフェース
-
-**端末1** - システム起動:
-```bash
-ros2 launch rb300_launch rb300_system.launch.py
-```
-
-**端末2** - Webブリッジ:
-```bash
-ros2 launch rb300_launch web_bridge.launch.py
-```
-
-**端末3** - HTTPサーバー:
-```bash
-cd /home/sunrise/ros2_ws/src/rb300_ros2/rb300_launch/web
-python3 -m http.server 8000
-```
-
-ブラウザでアクセス:
-```
-http://localhost:8000/odom_viewer.html
-```
-
-**Web機能**:
-- オドメトリ表示（X, Y, Theta）
-- エンコーダ値表示（左/右車輪）
-- システムリソース監視（CPU/メモリ）
-- キャリブレーションボタン（前進1m、回転90°等）
-- D-PADコントローラー
 
 ## トピック
 
@@ -190,7 +219,6 @@ http://localhost:8000/odom_viewer.html
 | `scripts/test_odom.py` | オドメトリテスト（0.1m/s × 10秒） |
 | `scripts/monitor_odom.py` | オドメトリ監視（端末表示） |
 | `scripts/analyze_odom.py` | rosbagオドメトリ解析 |
-| `scripts/start_web.sh` | Webサーバー一括起動 |
 
 ## ハードウェア構成
 

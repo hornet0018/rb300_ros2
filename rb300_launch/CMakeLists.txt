@@ -43,19 +43,12 @@ install(DIRECTORY
 install(PROGRAMS
   scripts/test_odom.py
   scripts/monitor_odom.py
-  scripts/start_web.sh
   DESTINATION lib/${PROJECT_NAME}
 )
 
 # Install URDF files
 install(DIRECTORY
   urdf
-  DESTINATION share/${PROJECT_NAME}
-)
-
-# Install web files
-install(DIRECTORY
-  web
   DESTINATION share/${PROJECT_NAME}
 )
 
