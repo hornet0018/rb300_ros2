@@ -11,3 +11,4 @@
 [submodule "rb300_webui"]
 	path = rb300_webui
 	url = https://github.com/hornet0018/rb300_webui.git
+	branch = develop
