@@ -12,3 +12,7 @@
 	path = rb300_webui
 	url = https://github.com/hornet0018/rb300_webui.git
 	branch = develop
+[submodule "rb300_nav"]
+	path = rb300_nav
+	url = https://github.com/hornet0018/rb300_nav.git
+	branch = develop
