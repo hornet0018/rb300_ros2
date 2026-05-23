@@ -1,0 +1,20 @@
+-- Install configuration: ""
+-- Execute custom install script
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav//launch/__pycache__/slam.launch.cpython-310.pyc
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav//launch/slam.launch.py
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav//config/slam_toolbox.yaml
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/ament_index/resource_index/package_run_dependencies/rb300_nav
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/ament_index/resource_index/parent_prefix_path/rb300_nav
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/environment/path.sh
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/environment/path.dsv
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/local_setup.bash
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/local_setup.sh
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/local_setup.zsh
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/local_setup.dsv
+-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/package.dsv
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/ament_index/resource_index/packages/rb300_nav
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/cmake/rb300_navConfig.cmake
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/cmake/rb300_navConfig-version.cmake
+-- Up-to-date symlink: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/package.xml

@@ -1,0 +1,44 @@
+[0.057s] Invoking command in '/home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav': CMAKE_PREFIX_PATH=/opt/tros/humble:/opt/ros/humble /usr/bin/cmake /home/sunrise/ros2_ws/src/rb300_ros2/rb300_nav -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav
+[0.373s] -- The C compiler identification is GNU 11.2.0
+[0.698s] -- The CXX compiler identification is GNU 11.2.0
+[0.737s] -- Detecting C compiler ABI info
+[1.122s] -- Detecting C compiler ABI info - done
+[1.178s] -- Check for working C compiler: /usr/bin/cc - skipped
+[1.180s] -- Detecting C compile features
+[1.182s] -- Detecting C compile features - done
+[1.200s] -- Detecting CXX compiler ABI info
+[1.639s] -- Detecting CXX compiler ABI info - done
+[1.695s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[1.697s] -- Detecting CXX compile features
+[1.699s] -- Detecting CXX compile features - done
+[1.710s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[4.268s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[4.729s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[5.326s] -- Configuring done
+[5.340s] -- Generating done
+[5.350s] -- Build files have been written to: /home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav
+[5.377s] Invoked command in '/home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav' returned '0': CMAKE_PREFIX_PATH=/opt/tros/humble:/opt/ros/humble /usr/bin/cmake /home/sunrise/ros2_ws/src/rb300_ros2/rb300_nav -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav
+[5.385s] Invoking command in '/home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav': CMAKE_PREFIX_PATH=/opt/tros/humble:/opt/ros/humble /usr/bin/cmake --build /home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav -- -j8 -l8
+[5.561s] Invoked command in '/home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav' returned '0': CMAKE_PREFIX_PATH=/opt/tros/humble:/opt/ros/humble /usr/bin/cmake --build /home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav -- -j8 -l8
+[5.610s] Invoking command in '/home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav': CMAKE_PREFIX_PATH=/opt/tros/humble:/opt/ros/humble /usr/bin/cmake --install /home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav
+[5.648s] -- Install configuration: ""
+[5.650s] -- Execute custom install script
+[5.653s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav//launch/__pycache__/slam.launch.cpython-310.pyc
+[5.694s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav//launch/slam.launch.py
+[5.736s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav//config/slam_toolbox.yaml
+[5.778s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/ament_index/resource_index/package_run_dependencies/rb300_nav
+[5.820s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/ament_index/resource_index/parent_prefix_path/rb300_nav
+[5.860s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/environment/ament_prefix_path.sh
+[5.902s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/environment/ament_prefix_path.dsv
+[5.944s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/environment/path.sh
+[5.991s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/environment/path.dsv
+[6.032s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/local_setup.bash
+[6.073s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/local_setup.sh
+[6.116s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/local_setup.zsh
+[6.157s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/local_setup.dsv
+[6.201s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/package.dsv
+[6.241s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/ament_index/resource_index/packages/rb300_nav
+[6.285s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/cmake/rb300_navConfig.cmake
+[6.325s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/cmake/rb300_navConfig-version.cmake
+[6.371s] -- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/package.xml
+[6.423s] Invoked command in '/home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav' returned '0': CMAKE_PREFIX_PATH=/opt/tros/humble:/opt/ros/humble /usr/bin/cmake --install /home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav

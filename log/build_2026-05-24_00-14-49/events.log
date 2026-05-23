@@ -1,0 +1,121 @@
+[0.000000] (-) TimerEvent: {}
+[0.000940] (-) JobUnselected: {'identifier': 'esp_serial_v2_cpp'}
+[0.002354] (-) JobUnselected: {'identifier': 'rb300_webui'}
+[0.003236] (-) JobUnselected: {'identifier': 'rplidar_ros'}
+[0.004172] (-) JobUnselected: {'identifier': 'serial'}
+[0.004454] (rb300_nav) JobQueued: {'identifier': 'rb300_nav', 'dependencies': OrderedDict()}
+[0.004690] (rb300_nav) JobStarted: {'identifier': 'rb300_nav'}
+[0.048278] (rb300_nav) JobProgress: {'identifier': 'rb300_nav', 'progress': 'cmake'}
+[0.051200] (rb300_nav) Command: {'cmd': ['/usr/bin/cmake', '/home/sunrise/ros2_ws/src/rb300_ros2/rb300_nav', '-DAMENT_CMAKE_SYMLINK_INSTALL=1', '-DCMAKE_INSTALL_PREFIX=/home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav'], 'cwd': '/home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav', 'env': OrderedDict([('USER', 'sunrise'), ('SSH_CLIENT', '100.92.225.106 60484 22'), ('AGENT', '1'), ('GIT_ASKPASS', '/home/sunrise/.vscode-server/bin/f6cfa2ea2403534de03f069bdf160d06451ed282/extensions/git/dist/askpass.sh'), ('OPENCODE_CALLER', 'vscode'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/tros/humble/lib/aarch64-linux-gnu:/opt/tros/humble/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/hobot/lib:/app/lib:/app/pub/lib:/middleware/lib:/middleware/pub/lib:/usr/hobot/lib/sensor:/system/lib:/system/usr/lib:/lib:'), ('BROWSER', '/home/sunrise/.vscode-server/bin/f6cfa2ea2403534de03f069bdf160d06451ed282/bin/helpers/browser.sh'), ('OPENCODE_PROCESS_ROLE', 'worker'), ('HOME', '/home/sunrise'), ('TERM_PROGRAM_VERSION', '1.121.0'), ('NVM_BIN', '/home/sunrise/.nvm/versions/node/v20.20.2/bin'), ('VSCODE_IPC_HOOK_CLI', '/tmp/vscode-ipc-4ac66d26-ab80-45ca-914b-1785a161e396.sock'), ('NVM_INC', '/home/sunrise/.nvm/versions/node/v20.20.2/include/node'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/sunrise/.vscode-server/bin/f6cfa2ea2403534de03f069bdf160d06451ed282/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/sunrise/.vscode-server/bin/f6cfa2ea2403534de03f069bdf160d06451ed282/node'), ('OPENCODE_RUN_ID', '077d04b1-5d40-485a-99e7-50bb5933b86d'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('NVM_DIR', '/home/sunrise/.nvm'), ('TROS_DISTRO', 'humble'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('CLAUDE_CODE_SSE_PORT', '64088'), ('TERM', 'xterm-256color'), ('ROS_LOCALHOST_ONLY', '0'), ('OPENCODE', '1'), ('PATH', '/home/sunrise/.opencode/bin:/home/sunrise/.vscode-server/bin/f6cfa2ea2403534de03f069bdf160d06451ed282/bin/remote-cli:/home/sunrise/.local/bin:/home/sunrise/.opencode/bin:/home/sunrise/.nvm/versions/node/v20.20.2/bin:/opt/tros/humble/bin:/opt/ros/humble/bin:/usr/hobot/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('OPENCODE_PID', '27182'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/tmp/vscode-git-ecbb833df5.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/opt/tros/humble:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('_EXTENSION_OPENCODE_PORT', '40349'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('VSCODE_NONCE', '703375c3-bb0e-4639-9038-982c36da6671'), ('PWD', '/home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav'), ('SSH_CONNECTION', '100.92.225.106 60484 100.93.212.95 22'), ('NVM_CD_FLAGS', ''), ('PYTHONPATH', '/opt/tros/humble/lib/python3.10/site-packages:/opt/tros/humble/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/tros/humble:/opt/ros/humble')]), 'shell': False}
+[0.098539] (-) TimerEvent: {}
+[0.199121] (-) TimerEvent: {}
+[0.299764] (-) TimerEvent: {}
+[0.377321] (rb300_nav) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.2.0\n'}
+[0.399930] (-) TimerEvent: {}
+[0.500482] (-) TimerEvent: {}
+[0.601027] (-) TimerEvent: {}
+[0.701556] (-) TimerEvent: {}
+[0.702641] (rb300_nav) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.2.0\n'}
+[0.741358] (rb300_nav) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.801778] (-) TimerEvent: {}
+[0.902335] (-) TimerEvent: {}
+[1.002854] (-) TimerEvent: {}
+[1.103408] (-) TimerEvent: {}
+[1.125795] (rb300_nav) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[1.182301] (rb300_nav) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[1.183736] (rb300_nav) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[1.186088] (rb300_nav) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[1.203993] (rb300_nav) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[1.204796] (-) TimerEvent: {}
+[1.305206] (-) TimerEvent: {}
+[1.405743] (-) TimerEvent: {}
+[1.506293] (-) TimerEvent: {}
+[1.606822] (-) TimerEvent: {}
+[1.643149] (rb300_nav) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[1.699722] (rb300_nav) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[1.701019] (rb300_nav) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[1.703609] (rb300_nav) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[1.706956] (-) TimerEvent: {}
+[1.713811] (rb300_nav) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[1.807179] (-) TimerEvent: {}
+[1.907730] (-) TimerEvent: {}
+[2.008222] (-) TimerEvent: {}
+[2.108752] (-) TimerEvent: {}
+[2.209265] (-) TimerEvent: {}
+[2.309789] (-) TimerEvent: {}
+[2.410311] (-) TimerEvent: {}
+[2.510829] (-) TimerEvent: {}
+[2.611361] (-) TimerEvent: {}
+[2.711905] (-) TimerEvent: {}
+[2.812405] (-) TimerEvent: {}
+[2.912945] (-) TimerEvent: {}
+[3.013485] (-) TimerEvent: {}
+[3.114001] (-) TimerEvent: {}
+[3.214525] (-) TimerEvent: {}
+[3.315088] (-) TimerEvent: {}
+[3.415604] (-) TimerEvent: {}
+[3.516122] (-) TimerEvent: {}
+[3.616649] (-) TimerEvent: {}
+[3.717119] (-) TimerEvent: {}
+[3.817601] (-) TimerEvent: {}
+[3.918074] (-) TimerEvent: {}
+[4.018582] (-) TimerEvent: {}
+[4.119128] (-) TimerEvent: {}
+[4.219738] (-) TimerEvent: {}
+[4.272324] (rb300_nav) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[4.319863] (-) TimerEvent: {}
+[4.420334] (-) TimerEvent: {}
+[4.520810] (-) TimerEvent: {}
+[4.621320] (-) TimerEvent: {}
+[4.721860] (-) TimerEvent: {}
+[4.733550] (rb300_nav) StdoutLine: {'line': b'-- Override CMake install command with custom implementation using symlinks instead of copying resources\n'}
+[4.822072] (-) TimerEvent: {}
+[4.922575] (-) TimerEvent: {}
+[5.023079] (-) TimerEvent: {}
+[5.123659] (-) TimerEvent: {}
+[5.224180] (-) TimerEvent: {}
+[5.324732] (-) TimerEvent: {}
+[5.329884] (rb300_nav) StdoutLine: {'line': b'-- Configuring done\n'}
+[5.344001] (rb300_nav) StdoutLine: {'line': b'-- Generating done\n'}
+[5.354621] (rb300_nav) StdoutLine: {'line': b'-- Build files have been written to: /home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav\n'}
+[5.380395] (rb300_nav) CommandEnded: {'returncode': 0}
+[5.383226] (rb300_nav) JobProgress: {'identifier': 'rb300_nav', 'progress': 'build'}
+[5.387063] (rb300_nav) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav', '--', '-j8', '-l8'], 'cwd': '/home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav', 'env': OrderedDict([('USER', 'sunrise'), ('SSH_CLIENT', '100.92.225.106 60484 22'), ('AGENT', '1'), ('GIT_ASKPASS', '/home/sunrise/.vscode-server/bin/f6cfa2ea2403534de03f069bdf160d06451ed282/extensions/git/dist/askpass.sh'), ('OPENCODE_CALLER', 'vscode'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/tros/humble/lib/aarch64-linux-gnu:/opt/tros/humble/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/hobot/lib:/app/lib:/app/pub/lib:/middleware/lib:/middleware/pub/lib:/usr/hobot/lib/sensor:/system/lib:/system/usr/lib:/lib:'), ('BROWSER', '/home/sunrise/.vscode-server/bin/f6cfa2ea2403534de03f069bdf160d06451ed282/bin/helpers/browser.sh'), ('OPENCODE_PROCESS_ROLE', 'worker'), ('HOME', '/home/sunrise'), ('TERM_PROGRAM_VERSION', '1.121.0'), ('NVM_BIN', '/home/sunrise/.nvm/versions/node/v20.20.2/bin'), ('VSCODE_IPC_HOOK_CLI', '/tmp/vscode-ipc-4ac66d26-ab80-45ca-914b-1785a161e396.sock'), ('NVM_INC', '/home/sunrise/.nvm/versions/node/v20.20.2/include/node'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/sunrise/.vscode-server/bin/f6cfa2ea2403534de03f069bdf160d06451ed282/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/sunrise/.vscode-server/bin/f6cfa2ea2403534de03f069bdf160d06451ed282/node'), ('OPENCODE_RUN_ID', '077d04b1-5d40-485a-99e7-50bb5933b86d'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('NVM_DIR', '/home/sunrise/.nvm'), ('TROS_DISTRO', 'humble'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('CLAUDE_CODE_SSE_PORT', '64088'), ('TERM', 'xterm-256color'), ('ROS_LOCALHOST_ONLY', '0'), ('OPENCODE', '1'), ('PATH', '/home/sunrise/.opencode/bin:/home/sunrise/.vscode-server/bin/f6cfa2ea2403534de03f069bdf160d06451ed282/bin/remote-cli:/home/sunrise/.local/bin:/home/sunrise/.opencode/bin:/home/sunrise/.nvm/versions/node/v20.20.2/bin:/opt/tros/humble/bin:/opt/ros/humble/bin:/usr/hobot/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('OPENCODE_PID', '27182'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/tmp/vscode-git-ecbb833df5.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/opt/tros/humble:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('_EXTENSION_OPENCODE_PORT', '40349'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('VSCODE_NONCE', '703375c3-bb0e-4639-9038-982c36da6671'), ('PWD', '/home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav'), ('SSH_CONNECTION', '100.92.225.106 60484 100.93.212.95 22'), ('NVM_CD_FLAGS', ''), ('PYTHONPATH', '/opt/tros/humble/lib/python3.10/site-packages:/opt/tros/humble/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/tros/humble:/opt/ros/humble')]), 'shell': False}
+[5.424966] (-) TimerEvent: {}
+[5.525511] (-) TimerEvent: {}
+[5.564935] (rb300_nav) CommandEnded: {'returncode': 0}
+[5.568382] (rb300_nav) JobProgress: {'identifier': 'rb300_nav', 'progress': 'install'}
+[5.613395] (rb300_nav) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav'], 'cwd': '/home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav', 'env': OrderedDict([('USER', 'sunrise'), ('SSH_CLIENT', '100.92.225.106 60484 22'), ('AGENT', '1'), ('GIT_ASKPASS', '/home/sunrise/.vscode-server/bin/f6cfa2ea2403534de03f069bdf160d06451ed282/extensions/git/dist/askpass.sh'), ('OPENCODE_CALLER', 'vscode'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/tros/humble/lib/aarch64-linux-gnu:/opt/tros/humble/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/hobot/lib:/app/lib:/app/pub/lib:/middleware/lib:/middleware/pub/lib:/usr/hobot/lib/sensor:/system/lib:/system/usr/lib:/lib:'), ('BROWSER', '/home/sunrise/.vscode-server/bin/f6cfa2ea2403534de03f069bdf160d06451ed282/bin/helpers/browser.sh'), ('OPENCODE_PROCESS_ROLE', 'worker'), ('HOME', '/home/sunrise'), ('TERM_PROGRAM_VERSION', '1.121.0'), ('NVM_BIN', '/home/sunrise/.nvm/versions/node/v20.20.2/bin'), ('VSCODE_IPC_HOOK_CLI', '/tmp/vscode-ipc-4ac66d26-ab80-45ca-914b-1785a161e396.sock'), ('NVM_INC', '/home/sunrise/.nvm/versions/node/v20.20.2/include/node'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/sunrise/.vscode-server/bin/f6cfa2ea2403534de03f069bdf160d06451ed282/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/sunrise/.vscode-server/bin/f6cfa2ea2403534de03f069bdf160d06451ed282/node'), ('OPENCODE_RUN_ID', '077d04b1-5d40-485a-99e7-50bb5933b86d'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('NVM_DIR', '/home/sunrise/.nvm'), ('TROS_DISTRO', 'humble'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('CLAUDE_CODE_SSE_PORT', '64088'), ('TERM', 'xterm-256color'), ('ROS_LOCALHOST_ONLY', '0'), ('OPENCODE', '1'), ('PATH', '/home/sunrise/.opencode/bin:/home/sunrise/.vscode-server/bin/f6cfa2ea2403534de03f069bdf160d06451ed282/bin/remote-cli:/home/sunrise/.local/bin:/home/sunrise/.opencode/bin:/home/sunrise/.nvm/versions/node/v20.20.2/bin:/opt/tros/humble/bin:/opt/ros/humble/bin:/usr/hobot/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('OPENCODE_PID', '27182'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/tmp/vscode-git-ecbb833df5.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/opt/tros/humble:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('_EXTENSION_OPENCODE_PORT', '40349'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('VSCODE_NONCE', '703375c3-bb0e-4639-9038-982c36da6671'), ('PWD', '/home/sunrise/ros2_ws/src/rb300_ros2/build/rb300_nav'), ('SSH_CONNECTION', '100.92.225.106 60484 100.93.212.95 22'), ('NVM_CD_FLAGS', ''), ('PYTHONPATH', '/opt/tros/humble/lib/python3.10/site-packages:/opt/tros/humble/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/tros/humble:/opt/ros/humble')]), 'shell': False}
+[5.625735] (-) TimerEvent: {}
+[5.652538] (rb300_nav) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[5.654526] (rb300_nav) StdoutLine: {'line': b'-- Execute custom install script\n'}
+[5.657325] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav//launch/__pycache__/slam.launch.cpython-310.pyc\n'}
+[5.698396] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav//launch/slam.launch.py\n'}
+[5.725960] (-) TimerEvent: {}
+[5.739792] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav//config/slam_toolbox.yaml\n'}
+[5.782109] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/ament_index/resource_index/package_run_dependencies/rb300_nav\n'}
+[5.823793] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/ament_index/resource_index/parent_prefix_path/rb300_nav\n'}
+[5.826146] (-) TimerEvent: {}
+[5.863932] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/environment/ament_prefix_path.sh\n'}
+[5.905755] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/environment/ament_prefix_path.dsv\n'}
+[5.926370] (-) TimerEvent: {}
+[5.948547] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/environment/path.sh\n'}
+[5.995353] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/environment/path.dsv\n'}
+[6.026597] (-) TimerEvent: {}
+[6.036563] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/local_setup.bash\n'}
+[6.076970] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/local_setup.sh\n'}
+[6.120008] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/local_setup.zsh\n'}
+[6.126833] (-) TimerEvent: {}
+[6.161265] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/local_setup.dsv\n'}
+[6.205636] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/package.dsv\n'}
+[6.227057] (-) TimerEvent: {}
+[6.245248] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/ament_index/resource_index/packages/rb300_nav\n'}
+[6.289244] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/cmake/rb300_navConfig.cmake\n'}
+[6.327292] (-) TimerEvent: {}
+[6.329080] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/cmake/rb300_navConfig-version.cmake\n'}
+[6.375123] (rb300_nav) StdoutLine: {'line': b'-- Symlinking: /home/sunrise/ros2_ws/src/rb300_ros2/install/rb300_nav/share/rb300_nav/package.xml\n'}
+[6.426071] (rb300_nav) CommandEnded: {'returncode': 0}
+[6.429267] (-) TimerEvent: {}
+[6.530342] (-) TimerEvent: {}
+[6.542850] (rb300_nav) JobEnded: {'identifier': 'rb300_nav', 'rc': 0}
+[6.546490] (-) EventReactorShutdown: {}
