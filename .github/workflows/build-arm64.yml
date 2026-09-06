@@ -1,0 +1,131 @@
+name: Build RB300 (arm64)
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      runner:
+        description: 'Runner label (arm64 hosted runners need a PUBLIC repo)'
+        default: 'ubuntu-22.04-arm'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build-arm64:
+    runs-on: ${{ inputs.runner || 'ubuntu-22.04-arm' }}
+    env:
+      ROS_DISTRO: humble
+      ARTIFACT_NAME: rb300_arm64.tar.gz
+      MANIFEST_NAME: rb300_manifest.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          # If a submodule is a private repo, create a PAT with repo scope and
+          # set it as the SUBMODULES_TOKEN secret; otherwise keep github.token.
+          token: ${{ secrets.SUBMODULES_TOKEN || github.token }}
+
+      - name: Install ROS 2 ${{ env.ROS_DISTRO }} (arm64)
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends curl gnupg2 lsb-release software-properties-common
+          sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
+            -o /usr/share/keyrings/ros-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" \
+            | sudo tee /etc/apt/sources.list.d/ros2.list
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            ros-${{ env.ROS_DISTRO }}-desktop \
+            ros-${{ env.ROS_DISTRO }}-rosbridge-suite \
+            ros-${{ env.ROS_DISTRO }}-diagnostic-updater \
+            ros-${{ env.ROS_DISTRO }}-rclcpp-components \
+            ros-${{ env.ROS_DISTRO }}-ament-cmake-ros \
+            ros-${{ env.ROS_DISTRO }}-ament-cmake-auto \
+            python3-colcon-common-extensions \
+            nlohmann-json3-dev
+
+      - name: Install Python runtime deps (rb300_webui)
+        run: python3 -m pip install --user flask flask-socketio flask-cors
+
+      - name: Build workspace (colcon --merge-install, Release)
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/ws"
+          cd "$HOME/ws"
+          colcon build \
+            --merge-install \
+            --base-paths "$GITHUB_WORKSPACE" \
+            --cmake-args -DCMAKE_BUILD_TYPE=Release \
+            --event-handlers console_cohesion+
+
+      - name: Resolve version
+        id: version
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            VERSION="$GITHUB_REF_NAME"
+          else
+            VERSION="$(git -C "$GITHUB_WORKSPACE" describe --tags --always --dirty 2>/dev/null || git -C "$GITHUB_WORKSPACE" rev-parse --short HEAD)"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git -C "$GITHUB_WORKSPACE" rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Package install space + manifest (sha256)
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          tar --sort=name --owner=0 --group=0 --numeric-owner --mtime='@0' \
+            -C "$HOME/ws/install" -czf "dist/${{ env.ARTIFACT_NAME }}" .
+          HASH="$(sha256sum "dist/${{ env.ARTIFACT_NAME }}" | awk '{print $1}')"
+          SIZE="$(stat -c %s "dist/${{ env.ARTIFACT_NAME }}")"
+          export HASH SIZE
+          python3 - <<'PY'
+          import json, os, datetime
+          manifest = {
+              "schema_version": 1,
+              "version": os.environ["VERSION"],
+              "arch": "aarch64",
+              "ros_distro": os.environ["ROS_DISTRO"],
+              "git_commit": os.environ["COMMIT_SHA"],
+              "built_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "files": [{
+                  "name": os.environ["ARTIFACT_NAME"],
+                  "sha256": os.environ["HASH"],
+                  "size": int(os.environ["SIZE"]),
+              }],
+          }
+          with open(f"dist/{os.environ['MANIFEST_NAME']}", "w") as f:
+              json.dump(manifest, f, indent=2)
+          PY
+          cat "dist/${{ env.MANIFEST_NAME }}"
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          COMMIT_SHA: ${{ steps.version.outputs.sha }}
+
+      - name: GPG sign manifest (optional, requires GPG_PRIVATE_KEY secret)
+        if: ${{ secrets.GPG_PRIVATE_KEY != '' }}
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        run: |
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --yes --import
+          gpg --batch --yes --armor --detach-sign "dist/${{ env.MANIFEST_NAME }}"
+
+      - name: Upload artifact (branch / manual run)
+        if: github.ref_type != 'tag'
+        uses: actions/upload-artifact@v4
+        with:
+          name: rb300-arm64
+          path: dist/*
+          retention-days: 7
+
+      - name: Publish GitHub Release (tag)
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          fail_on_unmatched_files: true
