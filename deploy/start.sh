@@ -10,4 +10,4 @@ CURRENT="$APP_ROOT/current"
 source "/opt/ros/$ROS_DISTRO/setup.bash"
 source "$CURRENT/install/setup.bash"
 
-exec ros2 launch rb300_launch rb300_system.launch.py "$@"
+exec ros2 launch rb300_webui rb300_system.launch.py "$@"
