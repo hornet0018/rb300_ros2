@@ -108,8 +108,9 @@ jobs:
           COMMIT_SHA: ${{ steps.version.outputs.sha }}
 
       - name: GPG sign manifest (optional, requires GPG_PRIVATE_KEY secret)
-        if: ${{ secrets.GPG_PRIVATE_KEY != '' }}
+        if: env.HAS_GPG_KEY == 'true'
         env:
+          HAS_GPG_KEY: ${{ secrets.GPG_PRIVATE_KEY != '' }}
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
         run: |
           echo "$GPG_PRIVATE_KEY" | gpg --batch --yes --import
