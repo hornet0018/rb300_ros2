@@ -55,6 +55,7 @@ jobs:
       - name: Build workspace (colcon --merge-install, Release)
         run: |
           set -euo pipefail
+          source "/opt/ros/${{ env.ROS_DISTRO }}/setup.bash"
           mkdir -p "$HOME/ws"
           cd "$HOME/ws"
           colcon build \
