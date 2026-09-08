@@ -5,13 +5,12 @@ RB300ロボットプラットフォーム用のROS2ワークスペース(ROS2 Hu
 ## 概要
 
 このワークスペースには、RB300ロボットを制御・操作するためのROS2パッケージが含まれています。
-GitHub Actions の arm64 ランナーでビルドし、install 空間を単一の tar.gz + sha256 マニフェストとして配布できます。
 
 ## 主な機能
 
 - **LiDAR統合**: RPLidar C1によるスキャンデータ取得
 - **オドメトリ生成**: エンコーダ値からの正確なオドメトリ計算(キャリブレーションYAML対応)
-- **SLAM**: slam_toolboxベースの自己位置推定(`rb300_nav`)
+- **SLAM**: Cartographer / slam_toolbox 対応の自己位置推定(`rb300_nav` + `rb300_webui`)
 - **Web UI**: ブラウザベースの監視・操作(`rb300_webui`、rosbridge + HTTPサーバー)
 - **システムモニタリング**: CPU/メモリ使用率の表示
 
@@ -50,8 +49,8 @@ ESP32マイコンとのシリアル通信を行うROS2ノード
 #### [rb300_nav](rb300_nav/)
 SLAM制御パッケージ
 
-- **ノード**: `slam_controller.py` - `/rb300_webui/slam_command` を監視し slam_toolbox を制御
-- **Launchファイル**: `slam.launch.py` / 設定: `config/slam_toolbox.yaml`
+- **ノード**: `slam_controller.py` - `/rb300_webui/slam_command`(start/stop)と `/rb300_webui/map_command`(地図保存・選択・ローカライゼーション)を監視
+- **Launchファイル**: `slam.launch.py` / 設定: `config/slam_toolbox.yaml`(slam_toolbox モード時)
 - **ライセンス**: MIT
 
 #### [rplidar_ros](rplidar_ros/)
@@ -79,6 +78,7 @@ sudo apt install ros-humble-diagnostic-updater
 sudo apt install ros-humble-rosbridge-suite
 sudo apt install ros-humble-robot-state-publisher
 sudo apt install ros-humble-slam-toolbox
+sudo apt install ros-humble-cartographer-ros
 
 # システムパッケージ
 sudo apt install nlohmann-json3-dev
@@ -91,55 +91,6 @@ cd /home/sunrise/ros2_ws
 colcon build --symlink-install
 source install/setup.bash
 ```
-
-## CIビルド (GitHub Actions / arm64)
-
-`.github/workflows/build-arm64.yml` が arm64 ランナー(`ubuntu-22.04-arm`、**公開リポジトリ限定**)でビルドします。
-
-**実行内容**:
-1. ROS2 Humble を arm64 にインストール
-2. `colcon build --merge-install -DCMAKE_BUILD_TYPE=Release` で全パッケージを単一install空間にビルド
-3. install空間を `rb300_arm64.tar.gz` に圧縮し、`rb300_manifest.json`(version / arch / git_commit / **sha256**)を生成
-4. `v*`タグpush → GitHub Release に tar + manifest を添付 / それ以外 → Actions アーティファクトに保存
-5. (任意) `GPG_PRIVATE_KEY` secret 設定時は manifest に署名(`.asc`)を付与
-
-**トリガー**: `main` への push / `v*` タグ push / 手動(workflow_dispatch、`runner`入力でランナー変更可)
-
-**Release 版の作成**:
-
-```bash
-git tag v0.1.0
-git push origin v0.1.0
-```
-
-## デプロイ (OTA / A/B差し替え)
-
-ロボット側で `deploy/` のスクリプトを使い、Releaseからダウンロード→検証→`/opt/app/rb300/ver-<hash>` に展開→`current` シンボリックリンク差し替え→サービス再起動を行います。旧バージョンは最大3世代保持され、ロールバック可能です。
-
-### 初回セットアップ
-
-```bash
-sudo ./deploy/setup_rb300.sh   # start.sh 配置 + rb300.service をsystemdに登録・有効化
-```
-
-### 更新
-
-```bash
-sudo ./deploy/update_rb300.sh            # 最新Releaseを適用
-sudo ./deploy/update_rb300.sh v0.1.0     # 特定バージョンを適用
-sudo ./deploy/update_rb300.sh --rollback # 前バージョンへ切り替え
-```
-
-**環境変数(上書き可)**:
-| 変数 | デフォルト | 説明 |
-|------|-----------|------|
-| `RB300_REPO` | `hornet0018/rb300_ros2` | GitHubリポジトリ |
-| `RB300_TARGET` | `/opt/app/rb300` | インストール先 |
-| `RB300_KEEP` | `3` | 保持する旧バージョン数 |
-| `RB300_DOWNLOAD` | (未設定) | ダウンロードURLの上書き(ミラー/S3等) |
-| `RB300_GPG_KEY` | (未設定) | manifestのGPG署名検証用フィンガープリント |
-
-**systemdサービス** (`deploy/rb300.service`): `/opt/app/rb300/start.sh` を起動。`start.sh` は `/opt/ros/humble/setup.bash` と `current/install/setup.bash` をsourceして `ros2 launch rb300_webui rb300_system.launch.py` を実行します。
 
 ## 使用方法
 
@@ -201,6 +152,9 @@ ros2 launch rb300_webui web_bridge.launch.py
 | `rosbridge_delay` | `3` | rosbridge起動遅延(秒) |
 | `web_port` | `8080` | HTTPサーバーポート(`web_dev:=false`時) |
 | `web_dev` | `false` | Vite開発サーバーを使用 |
+| **SLAM** | | |
+| `slam_mode` | `cartographer` | スキャンマッチング(`cartographer` / `slam_toolbox`) |
+| `map_dir` | `~/.rb300/maps` | 保存地図(pbstream / pgm)の格納先 |
 
 > オドメトリのキャリブレーション(車輪半径など)は `esp_serial_v2_cpp/config/odometry_calibration.yaml` で設定します。
 
@@ -230,6 +184,8 @@ ros2 launch rb300_webui web_bridge.launch.py
 | `/diagnostics` | `diagnostic_msgs/DiagnosticArray` | ダイアグノスト情報 |
 | `/battery_voltage` | `std_msgs/Float32` | バッテリー電圧 |
 | `/rb300_webui/slam_command` | `std_msgs/String` | SLAMコマンド(Web UI経由) |
+| `/rb300_webui/map_command` | `std_msgs/String` | 地図保存・選択・ローカライズ指示(JSON) |
+| `/rb300_webui/map_status` | `std_msgs/String` | 地図一覧・ローカライズ状態(JSON) |
 
 ### スクリプト
 
@@ -238,10 +194,6 @@ ros2 launch rb300_webui web_bridge.launch.py
 | `scripts/test_odom.py` | オドメトリテスト(0.1m/s × 10秒) |
 | `scripts/monitor_odom.py` | オドメトリ監視(端末表示) |
 | `scripts/analyze_odom.py` | rosbagオドメトリ解析 |
-| `deploy/setup_rb300.sh` | 初回デプロイセットアップ |
-| `deploy/update_rb300.sh` | OTA更新・ロールバック |
-| `deploy/start.sh` | systemd用起動スクリプト |
-| `deploy/rb300.service` | systemdユニット定義 |
 
 ## ハードウェア構成
 
